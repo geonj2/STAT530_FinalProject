@@ -1,0 +1,95 @@
+---
+title: "Title"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    citation_package: natbib
+    latex_engine: pdflatex
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{titlesec}
+  - \titleformat{\section}{\normalfont\Large\bfseries}{\hyperlink{toc}{\thesection}}{1em}{}
+---
+
+\newpage
+
+
+# Abstract
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+# Introduction
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+# Methods
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+# Results
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+# Discussion
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+# Conclusion 
+
+## (Subsection)
+
+### (Subsubsection)
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
