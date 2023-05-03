@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ---
 title: "Title"
 output:
@@ -16,6 +15,8 @@ header-includes:
 
 \newpage
 
+
+hello world
 
 ```{r,include=FALSE}
 #All the codes below will not show up on the knitted pdf document. 
