@@ -15,6 +15,7 @@ header-includes:
 
 \newpage
 
+
 ```{r,include=FALSE}
 #All the codes below will not show up on the knitted pdf document. 
 library(Seurat)
@@ -39,6 +40,14 @@ library(scater)
 data<-Read10X(data.dir="./")
 # renamed dataset to more straight forward name. 
 data2<-read.csv("merfish_all_cells.csv")
+```
+```{r}
+ass<-list(counts=t(data2[,10:ncol(data2)]))
+col<-data2[,6:8]
+scn<-c("Centroid_X","Centroid_Y")
+spe <- SpatialExperiment::SpatialExperiment(assays = ass, 
+                                            colData = col,
+                                            spatialCoordsNames = scn)
 ```
 
 ```{r,include=FALSE}
