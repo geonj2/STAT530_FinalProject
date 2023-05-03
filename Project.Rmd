@@ -15,6 +15,70 @@ header-includes:
 
 \newpage
 
+```{r,include=FALSE}
+#All the codes below will not show up on the knitted pdf document. 
+library(Seurat)
+library(monocle3)
+library(SeuratData)
+library(SeuratWrappers)
+library(tidyverse)
+library(patchwork)
+library(magrittr)
+library(SpatialExperiment)
+library(STexampleData)
+library(ggspavis)
+library(scran)
+library(nnSVG)
+library(MerfishData)
+library(ExperimentHub)
+library(scater)
+```
+
+```{r,include=FALSE}
+# Since we are using updated version of Seurat, make sure to change genes.tsv.gz to features.tsv.gz. 
+data<-Read10X(data.dir="./")
+# renamed dataset to more straight forward name. 
+data2<-read.csv("merfish_all_cells.csv")
+```
+
+```{r,include=FALSE}
+scRNA<-CreateSeuratObject(counts=data)
+scRNA<-NormalizeData(scRNA)
+scRNA<-FindVariableFeatures(scRNA)
+scRNA<-ScaleData(scRNA)
+scRNA<-RunPCA(scRNA)
+
+merfish<-data2[,10:ncol(data2)]
+# When running `FindVariableFeatures(), NAs are not allowed, hence removed. 
+merfish<-merfish[!apply(merfish,1,function(x) any(is.na(x)|!is.numeric(x))),]
+merfish_seurat<-CreateSeuratObject(counts=merfish)
+merfish_seurat<-NormalizeData(merfish_seurat)
+merfish_seurat<-FindVariableFeatures(merfish_seurat)
+merfish_seurat<-ScaleData(merfish_seurat)
+merfish_seurat<-RunPCA(merfish_seurat)
+
+# Function to determine the number of PCA. 
+elbowNum<-function(obj,threshold=.9){
+  a<-obj[["pca"]]
+  stdev<-a@stdev
+  var<-cumsum(stdev^2)/sum(stdev^2)
+  which(var>=threshold)[1]
+}
+# Calculates elbow point that exceeds .9, and dimension will be 1 to maximum of two seurat objects. 
+n1<-elbowNum(scRNA,.9)
+n2<-elbowNum(merfish_seurat,.9)
+ds<-1:(max(n1,n2))
+
+#Could not find a way to integrate. Significantly less number of samples for merfish data. 
+#anchorset<-FindIntegrationAnchors(object.list=list(scRNAseq=scRNA,
+#                                                   MERFISH=merfish_seurat),
+#                                  dims=ds)
+#seurat_int<-IntegrateData(anchorset=anchorset,dims=ds)
+
+#Potential method is to just use one of the data instead of finding a way to integrate them together. 
+```
+
+
 
 # Abstract
 
