@@ -15,9 +15,6 @@ header-includes:
 
 \newpage
 
-
-hello world
-
 ```{r,include=FALSE}
 #All the codes below will not show up on the knitted pdf document. 
 library(Seurat)
@@ -39,15 +36,16 @@ library(scater)
 
 ```{r,include=FALSE}
 # Since we are using updated version of Seurat, make sure to change genes.tsv.gz to features.tsv.gz. 
+# Not needed for what we wanted so far. 
 data<-Read10X(data.dir="./")
-# renamed dataset to more straight forward name. 
+# Renamed dataset to more straight forward name. 
 data2<-read.csv("merfish_all_cells.csv")
 
-#Removing NA values within the gene data. 
-#data22<-data2[!apply(data2,1,function(x) any(is.na(x))),]
-#Need to run the above if we want to run logNormCounts() to calculate PCA. Otherwise, not needed.
+
+data22<-data2#[!apply(data2,1,function(x) any(is.na(x))),]
+#Need to remove NAs if we want to run logNormCounts() to calculate PCA. Otherwise, not needed.
 #Removing NAs will reduce the unique Bregma to 4 from 12
-data22<-data2
+#To remove NAs, simply remove hashtag above after data2. 
 ass<-list(counts=t(data22[,10:ncol(data22)]))
 col<-data22[,4:9]
 spe<-SpatialExperiment(assays=ass,
@@ -90,88 +88,40 @@ n2<-elbowNum(merfish_seurat,.9)
 ds<-1:(max(n1,n2))
 unique(colData(spe)$Bregma)
 unique(colData(spe)$Neuron_cluster_ID)
+unique(colData(spe)$Behavior)
 ```
 
 
 ```{r,include=FALSE}
+#Function to subset spe using behavior. 
+subsetSpe<-function(d=spe,b){
+  d[,colData(d)$Behavior%in%b]
+}
+#Examples of subsetted data. 
+#d1 subsetted data which contains Parenting and d2 with Mating. 
+d1<-subsetSpe(spe,c("Parenting","Virgin Parenting"))
+d2<-subsetSpe(spe,"Mating")
 
+#The below is a function to draw the plot. 
+ctPlot<-function(d=spe,ct,bg=c(0.26,0.21,0.16,0.11,0.06,0.01,-0.04,
+                               -0.09,-0.14,-0.19,-0.24,-0.29)){
+  temp<-d[,colData(d)$Bregma%in%bg]
+  ctTemp<-colData(temp)$Neuron_cluster_ID
+  ctTemp[ctTemp%in%ct]<-ctTemp[ctTemp%in%ct]
+  ctTemp[!ctTemp%in%ct]<-"Other"
+  colData(temp)$cluster<-ctTemp
+  plotSpots(temp,
+            annotate="cluster",
+            in_tissue=NULL)+
+    #change ncol= value to change the number of plots in each row.
+    facet_wrap(~Bregma,ncol=4)
+}
+#Example of ctPlot (Cluster Plot).
+#The first argument is the object you want to plot. 
+#The second argument is the clusters you want to highlight. Any clusters that is not in the list will be named as "Other"
+#the third argument is the Bregma you want. If you look at the figure 5, I can make a rough guess that since 0.26 means 0 micrometer, .12 unit decrease means 100 micrometer increase. You can choose which ones you want. If you do not want to bother, leave it blank. 
+ctPlot(d1,c("I-5","I-6","I-9"),)
 ```
-
-
-
-# Abstract
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Introduction
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Methods
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Results
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Discussion
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Conclusion 
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-
-
-
-
-
-
-
 
 
 
