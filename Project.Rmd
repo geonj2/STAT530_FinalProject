@@ -121,6 +121,7 @@ ctPlot<-function(d=spe,ct,bg=c(0.26,0.21,0.16,0.11,0.06,0.01,-0.04,
 #The second argument is the clusters you want to highlight. Any clusters that is not in the list will be named as "Other"
 #the third argument is the Bregma you want. If you look at the figure 5, I can make a rough guess that since 0.26 means 0 micrometer, .12 unit decrease means 100 micrometer increase. You can choose which ones you want. If you do not want to bother, leave it blank. 
 ctPlot(d1,c("I-5","I-6","I-9"),)
+ctPlot(d2,c("I-5","I-6","I-9"),)
 ```
 
 
