@@ -42,17 +42,26 @@ library(scater)
 data<-Read10X(data.dir="./")
 # renamed dataset to more straight forward name. 
 data2<-read.csv("merfish_all_cells.csv")
-```
-```{r}
-ass<-list(counts=t(data2[,10:ncol(data2)]))
-col<-data2[,6:8]
-scn<-c("Centroid_X","Centroid_Y")
-spe <- SpatialExperiment::SpatialExperiment(assays = ass, 
-                                            colData = col,
-                                            spatialCoordsNames = scn)
+
+#Removing NA values within the gene data. 
+#data22<-data2[!apply(data2,1,function(x) any(is.na(x))),]
+#Need to run the above if we want to run logNormCounts() to calculate PCA. Otherwise, not needed.
+#Removing NAs will reduce the unique Bregma to 4 from 12
+data22<-data2
+ass<-list(counts=t(data22[,10:ncol(data22)]))
+col<-data22[,4:9]
+spe<-SpatialExperiment(assays=ass,
+                       colData=col,
+                       spatialCoordsNames=c("Centroid_X","Centroid_Y"))
 ```
 
 ```{r,include=FALSE}
+spe<-addPerCellQC(spe)
+spe<-computeLibraryFactors(spe)
+#Cannot run the following two lines unless NAs are removed. 
+#spe<-logNormCounts(spe)
+#spe<-runPCA(spe)
+
 scRNA<-CreateSeuratObject(counts=data)
 scRNA<-NormalizeData(scRNA)
 scRNA<-FindVariableFeatures(scRNA)
@@ -79,14 +88,13 @@ elbowNum<-function(obj,threshold=.9){
 n1<-elbowNum(scRNA,.9)
 n2<-elbowNum(merfish_seurat,.9)
 ds<-1:(max(n1,n2))
+unique(colData(spe)$Bregma)
+unique(colData(spe)$Neuron_cluster_ID)
+```
 
-#Could not find a way to integrate. Significantly less number of samples for merfish data. 
-#anchorset<-FindIntegrationAnchors(object.list=list(scRNAseq=scRNA,
-#                                                   MERFISH=merfish_seurat),
-#                                  dims=ds)
-#seurat_int<-IntegrateData(anchorset=anchorset,dims=ds)
 
-#Potential method is to just use one of the data instead of finding a way to integrate them together. 
+```{r,include=FALSE}
+
 ```
 
 
@@ -168,173 +176,3 @@ ds<-1:(max(n1,n2))
 
 
 
-=======
----
-title: "Title"
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-    number_sections: true
-    citation_package: natbib
-    latex_engine: pdflatex
-header-includes:
-  - \usepackage{hyperref}
-  - \usepackage{titlesec}
-  - \titleformat{\section}{\normalfont\Large\bfseries}{\hyperlink{toc}{\thesection}}{1em}{}
----
-
-\newpage
-
-
-```{r,include=FALSE}
-#All the codes below will not show up on the knitted pdf document. 
-library(Seurat)
-library(monocle3)
-library(SeuratData)
-library(SeuratWrappers)
-library(tidyverse)
-library(patchwork)
-library(magrittr)
-library(SpatialExperiment)
-library(STexampleData)
-library(ggspavis)
-library(scran)
-library(nnSVG)
-library(MerfishData)
-library(ExperimentHub)
-library(scater)
-```
-
-```{r,include=FALSE}
-# Since we are using updated version of Seurat, make sure to change genes.tsv.gz to features.tsv.gz. 
-data<-Read10X(data.dir="./")
-# renamed dataset to more straight forward name. 
-data2<-read.csv("merfish_all_cells.csv")
-```
-```{r}
-ass<-list(counts=t(data2[,10:ncol(data2)]))
-col<-data2[,6:8]
-scn<-c("Centroid_X","Centroid_Y")
-spe <- SpatialExperiment::SpatialExperiment(assays = ass, 
-                                            colData = col,
-                                            spatialCoordsNames = scn)
-```
-
-```{r,include=FALSE}
-scRNA<-CreateSeuratObject(counts=data)
-scRNA<-NormalizeData(scRNA)
-scRNA<-FindVariableFeatures(scRNA)
-scRNA<-ScaleData(scRNA)
-scRNA<-RunPCA(scRNA)
-
-merfish<-data2[,10:ncol(data2)]
-# When running `FindVariableFeatures(), NAs are not allowed, hence removed. 
-merfish<-merfish[!apply(merfish,1,function(x) any(is.na(x)|!is.numeric(x))),]
-merfish_seurat<-CreateSeuratObject(counts=merfish)
-merfish_seurat<-NormalizeData(merfish_seurat)
-merfish_seurat<-FindVariableFeatures(merfish_seurat)
-merfish_seurat<-ScaleData(merfish_seurat)
-merfish_seurat<-RunPCA(merfish_seurat)
-
-# Function to determine the number of PCA. 
-elbowNum<-function(obj,threshold=.9){
-  a<-obj[["pca"]]
-  stdev<-a@stdev
-  var<-cumsum(stdev^2)/sum(stdev^2)
-  which(var>=threshold)[1]
-}
-# Calculates elbow point that exceeds .9, and dimension will be 1 to maximum of two seurat objects. 
-n1<-elbowNum(scRNA,.9)
-n2<-elbowNum(merfish_seurat,.9)
-ds<-1:(max(n1,n2))
-
-#Could not find a way to integrate. Significantly less number of samples for merfish data. 
-#anchorset<-FindIntegrationAnchors(object.list=list(scRNAseq=scRNA,
-#                                                   MERFISH=merfish_seurat),
-#                                  dims=ds)
-#seurat_int<-IntegrateData(anchorset=anchorset,dims=ds)
-
-#Potential method is to just use one of the data instead of finding a way to integrate them together. 
-```
-
-
-
-# Abstract
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Introduction
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Methods
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Results
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Discussion
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-# Conclusion 
-
-## (Subsection)
-
-### (Subsubsection)
-
-\newpage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 81b6d402e418eb41e61626e186982078570fc70d
