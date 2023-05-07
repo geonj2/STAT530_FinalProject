@@ -15,6 +15,8 @@ header-includes:
 
 \newpage
 
+### Most likely will not need all these packages. 
+
 ```{r,include=FALSE}
 #All the codes below will not show up on the knitted pdf document. 
 library(Seurat)
@@ -32,7 +34,7 @@ library(nnSVG)
 library(MerfishData)
 library(ExperimentHub)
 library(scater)
-library(ggplot2)
+library(cowplot)
 ```
 
 ```{r,include=FALSE}
@@ -43,19 +45,25 @@ data<-Read10X(data.dir="./")
 data2<-read.csv("merfish_all_cells.csv")
 ```
 
+### Tried other method to plot. Recommended.  
+
 ```{r,include=FALSE}
 df<-data2
-head(df)
-plotter<-function(df,ct=NULL){
+#Subset function. Examples below. 
+subsetdf<-function(df=df,b){
+  df[df$Behavior%in%b,]
+}
+#Function to plot. Only df and cluster list needed. If you do not want to create cluster highlight, disregard cluster argument and leave it blank. 
+plotter<-function(df,ct = NULL){
   df_filt<-df[df$Neuron_cluster_ID%in%ct,]
   breg<-unique(df$Bregma)
   lapply(breg,function(breg){
-    ggplot()+
+    pt<-ggplot()+
       geom_point(data=df,aes(x=Centroid_X,y=Centroid_Y))+
-      labs(title=paste("Bregma Level:", breg),
+      labs(title=paste("Bregma Level:",breg),
            x="Centroid X",
            y="Centroid Y")
-    if(!is.null(ct)){
+    if (!is.null(ct)) {
       pt<-pt+
         geom_point(data=df_filt[df_filt$Bregma==breg,],
                    aes(x=Centroid_X,y=Centroid_Y,color=Neuron_cluster_ID))
@@ -63,9 +71,26 @@ plotter<-function(df,ct=NULL){
     pt
   })
 }
-plotter(df)
+#Examples of subset function. df1 will subset using behavior equals parentings, and df2 will subset using mating. 
+df1<-subsetdf(df,c("Parenting","Virgin Parenting"))
+df2<-subsetdf(df,"Mating")
+#Randomly chosen clusters. May not be relavant. 
+plotter(df1,c("I-5","I-6","I-9"))
+plotter(df2,c("I-5","I-6","I-9"))
+
+plot_grid(plotlist=plotter(df1,c("I-5","I-6","I-9")),ncol=2)
+plot_grid(plotlist=plotter(df2,c("I-5","I-6","I-9")),ncol=2)
 ```
 
+
+
+
+
+
+
+## Old Data
+
+### Created Seurat and Spatial Data for both data. 
 
 ```{r,include=FALSE}
 data22<-data2#[!apply(data2,1,function(x) any(is.na(x))),]
