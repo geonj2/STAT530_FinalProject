@@ -35,10 +35,11 @@ plotter<-function(df,ct=NULL,Animal_ID=NULL){
   
   lapply(animals,function(animal){
     lapply(breg,function(breg){
+      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
       pt<-ggplot()+
         geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
                    aes(x=Centroid_X,y=Centroid_Y,color=Cell_class),alpha=0.25)+
-        labs(title=paste("BregmaLevel:",breg,"AnimalID:",animal),
+        labs(title=paste("BregmaLevel:",breg,"AnimalID:",animal,"Sex:",sex),
              x="CentroidX",
              y="CentroidY")
       
