@@ -40,7 +40,8 @@ plotter<-function(df,ct=NULL,Animal_ID=NULL){
                                     override.aes=list(alpha=1)))+
           theme(legend.position="right",
                 legend.box="horizontal",
-                legend.box.just="left")
+                legend.box.just="left")+ 
+          theme(panel.background=element_blank())
         }
       pt
       })
