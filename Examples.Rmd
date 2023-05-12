@@ -64,6 +64,10 @@ plotter(df,c("I-14"),12)
 plotter(df,c("I-23","I-35"),18)
 plotter(df,c("I-23","I-35"),12)
 
+#For clusters E-3, E-30, and E-31
+plotter(df,c("E-3","E-31","E-30"),18)
+plotter(df,c("E-3","E-31","E-30"),12)
+
 # a<-df[df$Behavior=="Mating",]
 # unique(a[a$Animal_sex=="Male",]$Animal_ID)
 # unique(a[a$Animal_sex!="Male",]$Animal_ID)
@@ -79,5 +83,9 @@ plotter(df,c("I-14"),25)
 plotter(df,c("I-14"),28)
 plotter(df,c("I-23","I-35"),25)
 plotter(df,c("I-23","I-35"),28)
+
+#For clusters E-3, E-30, and E-31
+plotter(df,c("E-3","E-31","E-30"),25)
+plotter(df,c("E-3","E-31","E-30"),28)
 ```
 
