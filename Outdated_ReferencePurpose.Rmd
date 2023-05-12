@@ -1,5 +1,364 @@
 # Outdated. Reference purpose only. 
 
+```{r}
+plotter<-function(df,ct=NULL,Animal_ID=NULL){
+  df_filt<-df[df$Neuron_cluster_ID%in%ct,]
+  if(!is.null(Animal_ID)){
+    df<-df[df$Animal_ID%in%Animal_ID,]
+    df_filt<-df_filt[df_filt$Animal_ID%in%Animal_ID,]
+  }
+  
+  breg<-unique(df$Bregma)
+  animals<-unique(df$Animal_ID)
+  
+  lapply(animals,function(animal){
+    lapply(breg,function(breg){
+      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
+      behav<-df[df$Animal_ID==animal,"Behavior"][1]
+      pt<-ggplot()+
+        geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
+                   shape=20,
+                   aes(x=Centroid_X,y=Centroid_Y),alpha=1.1)+
+        ggtitle(paste("Level:",breg,"\nAnimalID:",animal,"Sex:",sex,"Behavior:",behav))+
+        theme(plot.title=element_text(size=14,face="bold"))
+      
+      if(!is.null(ct)){
+        pt<-pt+
+          geom_point(data=df_filt[df_filt$Bregma==breg&df_filt$Animal_ID==animal,],
+                     aes(x=Centroid_X,y=Centroid_Y,
+                         color=as.factor(Neuron_cluster_ID)))+
+          scale_color_discrete(name="Clusters") +
+          theme(panel.background=element_rect(fill='transparent'),
+                axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank(),
+                axis.title.y=element_blank(),
+                axis.text.y=element_blank(),
+                axis.ticks.y=element_blank(),
+                legend.position="none"
+                )
+        }
+      pt
+      })
+  })
+}
+plotter2<-function(df,ct=NULL,Animal_ID=NULL){
+  df_filt<-df[df$Neuron_cluster_ID%in%ct,]
+  if(!is.null(Animal_ID)){
+    df<-df[df$Animal_ID%in%Animal_ID,]
+    df_filt<-df_filt[df_filt$Animal_ID%in%Animal_ID,]
+  }
+  
+  breg<-unique(df$Bregma)
+  animals<-unique(df$Animal_ID)
+  
+  lapply(animals,function(animal){
+    lapply(breg,function(breg){
+      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
+      behav<-df[df$Animal_ID==animal,"Behavior"][1]
+      pt<-ggplot()+
+        geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
+                   shape=20,
+                   aes(x=Centroid_X,y=Centroid_Y),alpha=0.15)+
+        ggtitle(paste("Level:",breg,"\nSex:",sex,"Behavior:",behav))+
+        theme(plot.title=element_text(size=14,face="bold"))
+      
+      if(!is.null(ct)){
+        pt<-pt+
+          geom_point(data=df_filt[df_filt$Bregma==breg&df_filt$Animal_ID==animal,],
+                     aes(x=Centroid_X,y=Centroid_Y,
+                         color=as.factor(Neuron_cluster_ID)))+
+          scale_color_discrete(name="Clusters")+
+          theme(panel.background=element_rect(fill='transparent'),
+                axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank(),
+                axis.title.y=element_blank(),
+                axis.text.y=element_blank(),
+                axis.ticks.y=element_blank()
+                )
+        }
+      pt
+      })
+  })
+}
+
+plott<-function(df,ct,Animal_ID){
+  a<-plotter(df,ct,Animal_ID)
+  a2<-plotter2(df,ct,Animal_ID)
+  a<-unlist(a,recursive=FALSE)
+  a2<-unlist(a2,recursive=FALSE)
+  a[length(a) + 1]<-plot_grid(get_legend(a2[[4]]))
+  a
+}
+sav<-function(a,b,c,d,filename){
+  nam<-paste0(filename,".png")
+  ggsave(
+    filename=nam,
+    plot=arrangeGrob(grobs=c(a,b,c,d),ncol=5),
+    width=15,height=15,units="in"
+  )
+}
+```
+
+```{r}
+# VLPO parenting female vs male (i-5, e-3, e-10)
+a<-plott(df,c("I-5","E-3", "E-10"),18)
+b<-plott(df,c("I-5","E-3", "E-10"),12)
+# VLPO mating female vs male (i-5, e-3, e-10)
+c<-plott(df,c("I-5","E-3", "E-10"),25)
+d<-plott(df,c("I-5","E-3", "E-10"),28)
+sav(a,b,c,d,"VLPO")
+
+# MnPO parenting female vs male (i-44, e13, e7)
+e<-plott(df,c("I-44","E-13","E-7"),18)
+f<-plott(df,c("I-44","E-13","E-7"),12)
+# MnPO mating female vs male (i-44, e13, e7)
+g<-plott(df,c("I-44","E-13","E-7"),25)
+h<-plott(df,c("I-44","E-13","E-7"),28)
+sav(e,f,g,h,"MnPO")
+
+# CCK parenting female vs male (i-14, e-8)
+i<-plott(df,c("I-14", "E-8"),18)
+j<-plott(df,c("I-14", "E-8"),12)
+# CCK mating female vs male (i-14, e-8)
+k<-plott(df,c("I-14", "E-8"),25)
+l<-plott(df,c("I-14", "E-8"),28)
+sav(i,j,k,l,"CCK")
+
+# CRH parenting female vs male (i-23, i-35, e-20)
+m<-plott(df,c("I-23","I-35", "E-20"),18)
+n<-plott(df,c("I-23","I-35", "E-20"),12)
+# CRH mating female vs male (i-23, i-35, e-20)
+o<-plott(df,c("I-23","I-35", "E-20"),25)
+p<-plott(df,c("I-23","I-35", "E-20"),28)
+sav(m,n,o,p,"CRH")
+```
+
+```{r}
+library(ggplot2)
+library(patchwork)
+
+# Define the function
+plotter <- function(df, ct_vals, id_vals){
+  # Ensure id_vals is numeric
+  id_vals <- as.numeric(id_vals)
+
+  # First, create a new column in the dataframe to highlight rows based on ct_col
+  df$highlight <- ifelse(df$Neuron_cluster_ID %in% ct_vals, "highlight", "no highlight")
+
+  # Subset the dataframe to include only the specified IDs
+  df_sub <- df[df$Animal_ID %in% id_vals, ]
+
+  # Find unique Bregma values
+  unique_Bregma <- unique(df_sub$Bregma)
+
+  # Initialize an empty list to store the plots
+  plot_list <- list()
+
+  # Loop over each unique Bregma
+  for(i in 1:length(unique_Bregma)){
+    # Subset the dataframe to the current Bregma
+    df_bregma <- df_sub[df_sub$Bregma == unique_Bregma[i], ]
+
+    # Generate the plot
+    p <- ggplot(df_bregma, aes(x = Centroid_X, y = Centroid_Y)) +
+      geom_point(aes(color = highlight), size = 3) +
+      facet_grid(rows = vars(Animal_ID)) +
+      labs(title = paste("Bregma =", unique_Bregma[i])) +
+      theme_minimal() +
+      theme(strip.text.x = element_text(size = 8),
+            strip.text.y = element_text(size = 8)) +
+      theme(aspect.ratio = 1)  # Make the plot square
+
+    # Add the plot to the list
+    plot_list[[i]] <- p
+  }
+
+  # Combine the plots
+  combined_plot <- wrap_plots(plotlist = plot_list, ncol = length(unique_Bregma))
+
+  # Return the combined plot
+  return(combined_plot)
+}
+
+# Then call the function with the dataframe and column names as arguments
+# plotter(my_dataframe, c("I-5","E-3", "E-10"),c(18,12))
+
+
+plotter(df, c("I-5","E-3", "E-10"),c(18,12))
+```
+
+```{r}
+df_filt<-df[df$Animal_ID%in%c(12,18),]
+df_ct<-df_filt[df_filt$Neuron_cluster_ID%in%c("I-5","E-3", "E-10"),]
+pt<-ggplot()+
+  geom_point(data=df_filt,aes(x=Centroid_X,y=Centroid_Y),
+             shape=20,alpha=.05)+
+  geom_point(data=df_ct,aes(x=Centroid_X,y=Centroid_Y,color=as.factor(Neuron_cluster_ID)),
+             shape=16)+
+  facet_wrap(~ Animal_ID + Bregma, scales = "free",ncol=length(unique(df_ct$Bregma)),
+             labeller = label_bquote(cols = .(Animal_ID)~ "," ~ .(Bregma)))+
+  theme(panel.background=element_rect(fill='transparent'),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        aspect.ratio=1)+
+  scale_color_discrete(name="Clusters")
+
+
+```
+
+```{r,include=FALSE}
+
+# Renamed dataset to more straight forward name. 
+df<-read.csv("merfish_all_cells.csv")
+
+plotter<-function(df,ct=NULL,Animal_ID=NULL){
+  df_filt<-df[df$Neuron_cluster_ID%in%ct,]
+  if(!is.null(Animal_ID)){
+    df<-df[df$Animal_ID%in%Animal_ID,]
+    df_filt<-df_filt[df_filt$Animal_ID%in%Animal_ID,]
+  }
+  
+  breg<-unique(df$Bregma)
+  animals<-unique(df$Animal_ID)
+  
+  lapply(animals,function(animal){
+    lapply(breg,function(breg){
+      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
+      behav<-df[df$Animal_ID==animal,"Behavior"][1]
+      pt<-ggplot()+
+        geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
+                   shape=20,
+                   aes(x=Centroid_X,y=Centroid_Y),alpha=0.1)+
+        ggtitle(paste("Level:",breg))+
+        theme(plot.title=element_text(size=14,face="bold"),
+              plot.margin=margin(0,0,0,0))
+      
+      if(!is.null(ct)){
+        pt<-pt+
+          geom_point(data=df_filt[df_filt$Bregma==breg&df_filt$Animal_ID==animal,],
+                     aes(x=Centroid_X,y=Centroid_Y,
+                         color=as.factor(Neuron_cluster_ID)))+
+          scale_shape_manual(values=seq(2,2+length(ct),1))+
+          theme(legend.position="right",
+                legend.box="horizontal",
+                legend.box.just="left",
+                legend.title=element_text("Clusters"))+ 
+          theme(panel.background=element_rect(fill='transparent'),
+                axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank(),
+                axis.title.y=element_blank(),
+                axis.text.y=element_blank(),
+                axis.ticks.y=element_blank())
+        }
+      pt
+      })
+  })
+}
+
+#a<-df[df$Behavior=="Parenting",]
+#unique(a[a$Animal_sex=="Male",]$Animal_ID)
+#unique(a[a$Animal_sex!="Male",]$Animal_ID)
+
+#For Parenting
+#18 is female
+#12 is male
+plotter(df,c("I-5","I-8"),18)
+plotter(df,c("I-5","I-8"),12)
+plotter(df,c("I-44","E-13","E-7"),18)
+plotter(df,c("I-44","E-13","E-7"),12)
+plotter(df,c("I-14"),18)
+plotter(df,c("I-14"),12)
+plotter(df,c("I-23","I-35"),18)
+plotter(df,c("I-23","I-35"),12)
+
+# a<-df[df$Behavior=="Mating",]
+# unique(a[a$Animal_sex=="Male",]$Animal_ID)
+# unique(a[a$Animal_sex!="Male",]$Animal_ID)
+
+#For Mating
+#25 is female
+#28 is male
+plotter(df,c("I-5","I-8"),25)
+plotter(df,c("I-5","I-8"),28)
+plotter(df,c("I-44","E-13","E-7"),25)
+plotter(df,c("I-44","E-13","E-7"),28)
+plotter(df,c("I-14"),25)
+plotter(df,c("I-14"),28)
+plotter(df,c("I-23","I-35"),25)
+plotter(df,c("I-23","I-35"),28)
+```
+```{r}
+ggsave("combined_plot.png",
+       grid.arrange(grobs=do.call(c,plotter(df,c("I-5","I-8"),18)),ncol=4),
+       width=16,height=4,units="in")
+```
+
+```{r}
+# original plotter
+plotter<-function(df,ct=NULL,Animal_ID=NULL){
+  df_filt<-df[df$Neuron_cluster_ID%in%ct,]
+  if(!is.null(Animal_ID)){
+    df<-df[df$Animal_ID%in%Animal_ID,]
+    df_filt<-df_filt[df_filt$Animal_ID%in%Animal_ID,]
+  }
+  
+  breg<-unique(df$Bregma)
+  animals<-unique(df$Animal_ID)
+  
+  lapply(animals,function(animal){
+    lapply(breg,function(breg){
+      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
+      behav<-df[df$Animal_ID==animal,"Behavior"][1]
+      pt<-ggplot()+
+        geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
+                   shape=20,
+                   aes(x=Centroid_X,y=Centroid_Y),alpha=0.1)+
+        labs(x="CentroidX",
+             y="CentroidY")+
+        ggtitle(paste("Level:",breg,"\nAnimalID:",animal,"Sex:",sex,"Behavior:",behav))+
+        theme(plot.title=element_text(size=10,face="bold"))
+      
+      if(!is.null(ct)){
+        pt<-pt+
+          geom_point(data=df_filt[df_filt$Bregma==breg&df_filt$Animal_ID==animal,],
+                     aes(x=Centroid_X,y=Centroid_Y,
+                         color=as.factor(Neuron_cluster_ID)))+
+          scale_shape_manual(values=seq(2,2+length(ct),1))+
+          guides(shape=guide_legend(title="Cluster",ncol=1,
+                                    override.aes=list(alpha=1)))+
+          theme(legend.position="right",
+                legend.box="horizontal",
+                legend.box.just="left")+ 
+          theme(panel.background=element_rect(fill='transparent'))
+        }
+      pt
+      })
+  })
+}
+
+a_flat <- unlist(a, recursive = FALSE)
+b_flat <- unlist(b, recursive = FALSE)
+c_flat <- unlist(c, recursive = FALSE)
+d_flat <- unlist(d, recursive = FALSE)
+
+plots <- c(a_flat, b_flat, c_flat, d_flat)
+
+combined_plot_grob <- arrangeGrob(grobs = plots, ncol = 4)
+
+ggsave(
+  filename = "combined_plot.png",
+  plot = combined_plot_grob,
+  width = 15, height = 15, units = "in"
+)
+```
+
 ```{r,include=FALSE}
 #All the codes below will not show up on the knitted pdf document. 
 library(Seurat)
