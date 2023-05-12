@@ -41,7 +41,7 @@ plotter<-function(df,ct,ids){
     geom_point(data=df_filt,aes(x=Centroid_X,y=Centroid_Y),shape=18,alpha=.07)+
     geom_point(data=df_ct,aes(x=Centroid_X,y=Centroid_Y,color=as.factor(Neuron_cluster_ID)),shape=16)+
     facet_wrap(~Animal_ID+Bregma,scales="free",ncol=length(unique(df_ct$Bregma)),
-               labeller=label_bquote(cols=.(Animal_ID)~","~.(Bregma)))+
+               labeller=label_bquote(cols=.(Animal_ID)~", Bregma:"~.(Bregma)))+
     theme(panel.background=element_rect(fill='transparent'),
           axis.title.x=element_blank(),
           axis.text.x=element_blank(),
@@ -76,7 +76,7 @@ saver(df_filt,c("I-14","E-8"),
 saver(df_filt,c("I-23","I-35","E-20"),
       c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
       "CRH")
-saver(df_filt,c("E-3","E-31","E-30"),
+saver(df_filt,c("E-3","E-31","E-30","I-14","I-24"),
       c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
       "Misael")
 ```
