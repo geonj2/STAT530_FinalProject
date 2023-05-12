@@ -1,83 +1,53 @@
-```{r}
+---
+title: "The Function of Hypothalamic Preoptic Region of Sleeping and XX Behaviors in Mouse"
+author: "Gun Jang, Jiaying (Tina) Wu, Zhendao (Jason) Li, Misael Lazaro Trigo"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    citation_package: natbib
+    latex_engine: pdflatex
+header-includes:
+  - \usepackage{hyperref}
+  - \usepackage{titlesec}
+  - \titleformat{\section}{\normalfont\Large\bfseries}{\hyperlink{toc}{\thesection}}{1em}{}
+---
+
+```{r,include=FALSE}
 library(tidyverse)
 library(gridExtra)
 library(png)
 library(grid)
-# Renamed dataset to more straight forward name. 
+library(patchwork)
+library(cowplot)
 df<-read.csv("merfish_all_cells.csv")
-
-plotter<-function(df,ct=NULL,Animal_ID=NULL){
-  df_filt<-df[df$Neuron_cluster_ID%in%ct,]
-  if(!is.null(Animal_ID)){
-    df<-df[df$Animal_ID%in%Animal_ID,]
-    df_filt<-df_filt[df_filt$Animal_ID%in%Animal_ID,]
-  }
-  
-  breg<-unique(df$Bregma)
-  animals<-unique(df$Animal_ID)
-  
-  lapply(animals,function(animal){
-    lapply(breg,function(breg){
-      sex<-df[df$Animal_ID==animal,"Animal_sex"][1]
-      behav<-df[df$Animal_ID==animal,"Behavior"][1]
-      pt<-ggplot()+
-        geom_point(data=df[df$Bregma==breg&df$Animal_ID==animal,],
-                   shape=20,
-                   aes(x=Centroid_X,y=Centroid_Y),alpha=0.1)+
-        labs(x="CentroidX",
-             y="CentroidY")+
-        ggtitle(paste("Level:",breg,"\nAnimalID:",animal,"Sex:",sex,"Behavior:",behav))+
-        theme(plot.title=element_text(size=10,face="bold"))
-      
-      if(!is.null(ct)){
-        pt<-pt+
-          geom_point(data=df_filt[df_filt$Bregma==breg&df_filt$Animal_ID==animal,],
-                     aes(x=Centroid_X,y=Centroid_Y,
-                         color=as.factor(Neuron_cluster_ID)))+
-          scale_shape_manual(values=seq(2,2+length(ct),1))+
-          guides(color=guide_legend(title="CellClass",ncol=1),
-                 shape=guide_legend(title="Cluster",ncol=1,
-                                    override.aes=list(alpha=1)))+
-          theme(legend.position="right",
-                legend.box="horizontal",
-                legend.box.just="left")+ 
-          theme(panel.background=element_blank())
-        }
-      pt
-      })
-  })
-}
-
-#a<-df[df$Behavior=="Parenting",]
-#unique(a[a$Animal_sex=="Male",]$Animal_ID)
-#unique(a[a$Animal_sex!="Male",]$Animal_ID)
-
-#For Parenting
-#18 is female
-#12 is male
-plotter(df,c("I-5","I-8"),18)
-plotter(df,c("I-5","I-8"),12)
-plotter(df,c("I-44","E-13","E-7"),18)
-plotter(df,c("I-44","E-13","E-7"),12)
-plotter(df,c("I-14"),18)
-plotter(df,c("I-14"),12)
-plotter(df,c("I-23","I-35"),18)
-plotter(df,c("I-23","I-35"),12)
-
-# a<-df[df$Behavior=="Mating",]
-# unique(a[a$Animal_sex=="Male",]$Animal_ID)
-# unique(a[a$Animal_sex!="Male",]$Animal_ID)
-
-#For Mating
-#25 is female
-#28 is male
-plotter(df,c("I-5","I-8"),25)
-plotter(df,c("I-5","I-8"),28)
-plotter(df,c("I-44","E-13","E-7"),25)
-plotter(df,c("I-44","E-13","E-7"),28)
-plotter(df,c("I-14"),25)
-plotter(df,c("I-14"),28)
-plotter(df,c("I-23","I-35"),25)
-plotter(df,c("I-23","I-35"),28)
 ```
+
+```{r,out.width="100%"}
+plotter<-function(df,ct,ids){
+  df_filt<-df[df$Animal_ID%in%ids,]
+  df_ct<-df_filt[df_filt$Neuron_cluster_ID%in%ct,]
+
+  pt<-ggplot()+
+    geom_point(data=df_filt,aes(x=Centroid_X,y=Centroid_Y),shape=20,alpha=.05)+
+    geom_point(data=df_ct,aes(x=Centroid_X,y=Centroid_Y,color=as.factor(Neuron_cluster_ID)),shape=16)+
+    facet_wrap(~Animal_ID+Bregma,scales="free",ncol=length(unique(df_ct$Bregma)),
+               labeller=label_bquote(cols=.(Animal_ID)~","~.(Bregma)))+
+    theme(panel.background=element_rect(fill='transparent'),
+          axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          aspect.ratio=1)+
+    scale_color_discrete(name="Clusters")
+  pt
+}
+plotter(df,c("I-5","E-3", "E-10"),c(12,18,25,28))
+```
+
+
+
 
