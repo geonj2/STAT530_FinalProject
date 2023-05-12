@@ -25,6 +25,14 @@ df<-read.csv("merfish_all_cells.csv")
 ```
 
 ```{r,out.width="100%"}
+df_filt<-df[df$Animal_ID%in%c(12,18,25,28),]
+
+df_filt$Animal_ID<-ifelse(df_filt$Animal_ID==12,"Male: Parenting",
+                          ifelse(df_filt$Animal_ID==18,"Female: Parenting",
+                                 ifelse(df_filt$Animal_ID==25,"Female: Mating",
+                                        "Male: Mating")))
+
+
 plotter<-function(df,ct,ids){
   df_filt<-df[df$Animal_ID%in%ids,]
   df_ct<-df_filt[df_filt$Neuron_cluster_ID%in%ct,]
@@ -56,10 +64,20 @@ saver<-function(df,ct,ids,name){
 #to see here on Rstudio
 #plotter(df,c("I-5","E-3", "E-10"),c(12,18,25,28))
 #to save in your local drive
-saver(df,c("I-5","E-3","E-10"),c(12,18,25,28),"VLPO")
-saver(df,c("I-44","E-13","E-7"),c(12,18,25,28),"MnPO")
-saver(df,c("I-14","E-8"),c(12,18,25,28),"CCK")
-saver(df,c("I-23","I-35","E-20"),c(12,18,25,28),"CRH")
-saver(df,c("E-3","E-31","E-30"),c(12,18,25,28),"Misael")
+saver(df_filt,c("I-5","E-3","E-10"),
+      c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
+      "VLPO")
+saver(df_filt,c("I-44","E-13","E-7"),
+      c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
+      "MnPO")
+saver(df_filt,c("I-14","E-8"),
+      c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
+      "CCK")
+saver(df_filt,c("I-23","I-35","E-20"),
+      c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
+      "CRH")
+saver(df_filt,c("E-3","E-31","E-30"),
+      c("Male: Parenting","Female: Parenting","Female: Mating","Male: Mating"),
+      "Misael")
 ```
 

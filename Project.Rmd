@@ -1,5 +1,6 @@
 ---
-title: "Title"
+title: "The Function of Hypothalamic Preoptic Region of Sleeping and XX Behaviors in Mouse"
+author: "Gun Jang, Jiaying (Tina) Wu, Zhendao (Jason) Li, Misael Lazaro Trigo"
 output:
   pdf_document:
     toc: true
