@@ -45,9 +45,18 @@ plotter<-function(df,ct,ids){
     scale_color_discrete(name="Clusters")
   pt
 }
+
+saver<-function(df,ct,ids,name){
+  nm<-paste0(name,".png")
+  ggsave(nm,
+         plotter(df,ct,ids),
+         width=15,height=15,units="in")
+}
+
+#to see here on Rstudio
 plotter(df,c("I-5","E-3", "E-10"),c(12,18,25,28))
+#to save in your local drive
+saver(df,c("I-5","E-3", "E-10"),c(12,18,25,28),"VLPO")
+
 ```
-
-
-
 
