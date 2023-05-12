@@ -30,7 +30,7 @@ plotter<-function(df,ct,ids){
   df_ct<-df_filt[df_filt$Neuron_cluster_ID%in%ct,]
 
   pt<-ggplot()+
-    geom_point(data=df_filt,aes(x=Centroid_X,y=Centroid_Y),shape=20,alpha=.05)+
+    geom_point(data=df_filt,aes(x=Centroid_X,y=Centroid_Y),shape=18,alpha=.07)+
     geom_point(data=df_ct,aes(x=Centroid_X,y=Centroid_Y,color=as.factor(Neuron_cluster_ID)),shape=16)+
     facet_wrap(~Animal_ID+Bregma,scales="free",ncol=length(unique(df_ct$Bregma)),
                labeller=label_bquote(cols=.(Animal_ID)~","~.(Bregma)))+
@@ -54,9 +54,14 @@ saver<-function(df,ct,ids,name){
 }
 
 #to see here on Rstudio
-plotter(df,c("I-5","E-3", "E-10"),c(12,18,25,28))
+#plotter(df,c("I-5","E-3", "E-10"),c(12,18,25,28))
 #to save in your local drive
-saver(df,c("I-5","E-3", "E-10"),c(12,18,25,28),"VLPO")
+saver(df,c("I-5","E-3","E-10"),c(12,18,25,28),"VLPO")
+saver(df,c("I-44","E-13","E-7"),c(12,18,25,28),"MnPO")
+saver(df,c("I-14","E-8"),c(12,18,25,28),"CCK")
+saver(df,c("I-23","I-35","E-20"),c(12,18,25,28),"CRH")
+saver(df,c("E-3","E-31","E-30"),c(12,18,25,28),"Misael")
+
 
 ```
 
