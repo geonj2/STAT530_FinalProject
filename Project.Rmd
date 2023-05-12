@@ -15,6 +15,10 @@ header-includes:
 
 \newpage
 
+```{r,include=FALSE}
+library(knitr)
+```
+
 
 # Abstract
 
@@ -34,10 +38,20 @@ header-includes:
 
 # Figures
 
-```{r,include=FALSE}
-library(knitr)
-```
 ```{r,echo=FALSE,out.width='100%',fig.cap="Fig 1: CCK Plot"}
 include_graphics("./plots/CCK.png")
+```
+```{r,echo=FALSE,out.width='100%',fig.cap="Fig 2: CRH Plot"}
+include_graphics("./plots/CRH.png")
+```
+```{r,echo=FALSE,out.width='100%',fig.cap="Fig 3: Cluster Misael asked for"}
+#Change the fig.cap...
+include_graphics("./plots/Misael.png")
+```
+```{r,echo=FALSE,out.width='100%',fig.cap="Fig 4: MnPO Plot"}
+include_graphics("./plots/MnPO.png")
+```
+```{r,echo=FALSE,out.width='100%',fig.cap="Fig 5: VLPO Plot"}
+include_graphics("./plots/VLPO.png")
 ```
 
