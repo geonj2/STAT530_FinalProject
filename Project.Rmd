@@ -1,6 +1,6 @@
 ---
 title: "The Hypothalamic Preoptic Region and Its Relationship to Sleeping and Growth Behaviors in Mouse"
-author: \small{Geon Jang (geonj2), Jiaying (Tina) Wu, Jason (Zhendao) Li, Misael Lazaro Trigo (misaell2)}
+author: \small Geon Jang, Jiaying (Tina) Wu, Jason (Zhendao) Li, Misael Lazaro Trigo
 output:
   pdf_document:
     toc: true
@@ -111,7 +111,7 @@ Misael contributed to writing Abstract, part of introduction, discussion about s
 
 Jiaying contributed to writing part of introduction, results and discussion about sleeping behavior, and part of conclusion.       
 
-Gun contributed to data visualization, document formatting, and version control.
+Geon contributed to data visualization, document formatting, and version control.
 
 Jason contributed to the exploratory data analysis, plot testing, document formatting and proofreading.
 
