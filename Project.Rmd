@@ -1,6 +1,6 @@
 ---
-title: "The Function of Hypothalamic Preoptic Region of Sleeping and XX Behaviors in Mouse"
-author: "Gun Jang, Jiaying (Tina) Wu, Zhendao (Jason) Li, Misael Lazaro Trigo"
+title: "The Hypothalamic Preoptic Region and Its Relationship to Sleeping and Growth Behaviors in Mouse"
+author: \small{Geon Jang (geonj2), Jiaying (Tina) Wu, Jason (Zhendao) Li, Misael Lazaro Trigo (misaell2)}
 output:
   pdf_document:
     toc: true
@@ -8,10 +8,14 @@ output:
     number_sections: true
     citation_package: natbib
     latex_engine: pdflatex
+mainfont: Georgia
+fontsize: 12pt
 header-includes:
   - \usepackage{hyperref}
   - \usepackage{titlesec}
   - \titleformat{\section}{\normalfont\Large\bfseries}{\hyperlink{toc}{\thesection}}{1em}{}
+  - \geometry{left=1in,right=1in,top=1in,bottom=1.15in}
+  - \usepackage{url}
 ---
 
 \newpage
@@ -21,35 +25,97 @@ library(knitr)
 ```
 
 
-To hyperlink to figure one, use the following: \hyperref[dummy-one]{\color{blue}Fig. 1} 
-
-To hyperlink to figure two, use the following: \hyperref[dummy-two]{\color{blue}Fig. 2} 
-
-To hyperlink to figure three, use the following: \hyperref[dummy-three]{\color{blue}Fig. 3} 
-
-To hyperlink to figure four, use the following: \hyperref[dummy-four]{\color{blue}Fig. 4} 
-
-To hyperlink to figure five, use the following: \hyperref[dummy-five]{\color{blue}Fig. 5} 
-
-To hyperlink to figure six, use the following: \hyperref[dummy-six]{\color{blue}Fig. 6} 
-
-
-
 # Abstract
 
+The brain is the most complex organ in the human body. There are about 86 billion neurons, all of which are in use, placed in a delicate circuit so they can share information via hormone and other chemical signaling. Understanding how the brain works is a massive undertaking that can benefit humanity in countless ways. To start unraveling how the brain functions we are focusing our efforts on the hypothalamic preoptic region (POA) of the brain. The data we analyzed comes from mice samples and we will be comparing what we know about human POA with mice data to understand more about the circuits that manage the brain. 
 
-\newpage
+\bigskip
 
-# Body
+# Introduction  
 
+The preoptic region of the hypothalamus controls many social behaviors. In humans, the POA plays a key role in regulating various physiological processes such as, body temperature, sleep, sexual behavior, and hormone release. Furthermore, some neurological and psychiatric disorders, including sleep disorders, depression, and schizophrenia are linked to problems with the POA. For example, poor connectivity between neurons has been linked to sleep disorders. Other problems include changes in volume of the POA which are linked to schizophrenia and irregular expression of certain genes in POA that are linked with depression. To study how the POA works, we use a combination of scRNA seq and MERFISH data. Single-cell sequencing is a tool that provides the profiles of the cell genome to identify the cells. Spatial transcriptomics is a tool to provide the profiles of in situ spatial mapping to show the cell's simultaneous organizations. The combination of single-cell sequencing and spatial transcriptomics could provide the functional and spatial profiles of the cells. To understand how the mouse POA works, the molecular, special, and functional structures of different cell types should be studied. Understanding the mechanisms that rule POA function can also help us develop various therapeutic treatments. In this summary, we will focus on understanding what drives sleeping behavior and sexual behavior in the mouse brain.  
 
-\newpage
+The preoptic region has been known as a control center for sleeping behavior \hyperref[dummy]{\color{blue} [2]}. The research indicated that the sleeping rates have a higher level of c-Fos labeled neurons in the ventrolateral preoptic area (VLPO) and median preoptic nucleus (MnPO) \hyperref[dummy]{\color{blue} [3]}. The level of increase is related to the hours of sleep. However, some studies indicated that the neurons related to sleep could be in a wider region in the preoptic region. The genes that are related to sleeping behavior have also been studied. cholecystokinin (CCK), corticotropin-releasing hormone (CRH) could be enriched in neurons during sleeping \hyperref[dummy]{\color{blue} [2]}.  
+
+In our project, we will use the clusters and marker genes in Moffitt et al. (2018). Perform MERFISH analysis using the clusters relative to the sleeping behaviors. The aim is to explore how the mouse hypothalamic preoptic region controls sleeping behaviors and sexual behavior, by comparing (i) parenting females and males and (ii) mating females and males. Two groups of genes were used: (i) genes identified by single-cell sequencing, and (ii) genes from other references. We are interested in the spatial organization of neurons that we are interested in. We visualized the neuron distribution in the mouse brain. 
+
+\bigskip
+
+# Sleeping behavior
+
+*Methods summary:* Moffitt et al. (2018) conducted single-cell sequencing for ~ 31,000 cells and spatial transcriptomics for ~ 1.1 million cells. Firstly, they clustered cells and found marker genes through single-cell sequencing. Secondly, they identified the cell population using the marker genes combined with spatial mapping. Lastly, they identified the cell populations which were associated with the different social behaviors. They clustered inhibitory neurons to 43 groups, and excitatory neurons to 23 groups. The marker genes of each cluster also have been labeled \hyperref[dummy]{\color{blue} [1]}. The following analysis is based on the single-cell sequencing results from Moffitt et al. (2018). Clusters i5, e3, and e10 defined the population in the VLPO region. Markers of clusters i22, e13, and e7 defined the population in the MnPO region. In addition, we also learned the genes from other references that may be relevant to sleeping behavior. Cells that express CCK and CRH have been considered genes that modulate sleeping behaviors. The identified clusters relative to CCK were i14 and e8. The identified clusters relative to CRH were i23, i35, and e20. I14, e8, i23, i35, and e20 define the populations in SCN, bed nucleus of the stria terminalis/bed nucleus of the anterior commissure (BNST/BAC), bed nucleus of the stria terminalis/medial preoptic area (BNST/MPA), lateral preoptic area (LPO), and PVN region, respectively.  
+
+**Results 1:** The spatial organization of neuronal clusters relative to the VLPO is shown in \hyperref[dummy-one]{\color{blue}Figure 1}. The first group that we compared is the parenting group, female vs male. Clusters I5 and E10 showed similar distribution between females and males. Cluster E3 was more enriched in level 0.16 than 0.11 in females but more enriched in level 0.11 than 0.16 in males. The second group that we compared is the matting group, female vs male. Cluster I5 and E10 showed similar distribution between females and males. In level 0.21, cluster E3 was more enriched in males. In level 0.11, cluster E3 was more enriched in females. To sum up, Cluster I5 and E10 showed similar patterns between females and males in both parenting and matting groups. Cluster I5 had different levels of expression. Cluster I5 has GABA/Pou3f3 as makers.   
+
+**Results 2:** The spatial organization of neuronal clusters relative to the MnPO is shown in \hyperref[dummy-two]{\color{blue}Figure 2}. Due to I44 not being included in the dataset, we used E13 and E7 for the analysis. Overall, parenting and mating mice show similar activity at all levels. There is no difference observed between females and males.   
+
+**Results 3:** The spatial organization of neuronal clusters relative to the CCK is shown in \hyperref[dummy-three]{\color{blue}Figure 3}. In the parenting group, the distribution of E8 and I14 showed similar trends between females and males. In the mating group, the E8 and I14 also had similarities between females and males. However, if we compare the parenting group and the mating group, in level 0.11, the mating group showed more activated E8 and I14 clusters than the parenting group.  
+
+**Results 4:** The spatial organization of neuronal clusters relative to the CRH is shown in \hyperref[dummy-four]{\color{blue}Figure 4}. The females and males in the parenting group were compared. Clusters E20 and I35 showed a similar trend between these two groups. Cluster I23 shows a higher expression level in females levels 0.16 and 0.11 than those levels in males. In mating group comparisons, there are no obvious differences between clusters E20 and I35. Cluster I23 enriched more in females at levels 0.16 and 0.11. To sum up, there is no observed difference in clusters E20 and I35 between females and males in both parenting and mating groups. I23 has a higher expression level in females than males in both parenting and mating groups. Females tend to have more active I23 at levels 0.16 and 0.11 than males no matter whether they are parenting or mating. CRH could have higher expression in these regions which are named BNST/MPA.  
+
+For VLPO, females in parenting and mating show higher E3 activity at level 0.16, while there is no observed difference between parenting and mating groups. For MnPO, all mice showed similarities regardless of their gender or group. For CCK, there is no obvious difference between females and males. But the mating group showed higher E8 and I14 activity at level 0.11. For CRH, there is no obvious difference between mating and parenting groups. But females tend to have higher I23 activity at levels 0.16 and 0.11.  
+
+Females showed higher E3 and I23 activity. The mating group showed higher E8 and I141 activity. Females showed higher activity in the ventrolateral preoptic area, bed nucleus of the stria terminalis, and medial preoptic area. The mating group showed higher activity in the bed nucleus of the stria terminalis, bed nucleus of the anterior commissure, and SCN than the parenting group.  
+
+\bigskip
+
+# Sexual/Growth behavior 
+
+Methods summary: The following analysis is based on the single-cell sequencing results from Moffitt et al. (2018). We first looked at genes involved in growth, Lepr, GNrH, OXT, and identified which clusters they were highly expressed in, E-3, E-30, E-31, I-24. We also looked at one particular cluster, I-14, which was highly expressed in the parenting mice but not the other mice. We hypothesized that the genes in cluster I-14 might be important for growth and reproduction. We then analyzed the clusters using spatial mapping and concluded the following results from the graphs and the top five genes from each of the clusters mentioned above.   
+ 
+**Results 1:** It is interesting to note that in \hyperref[dummy-six]{\color{blue}Figure 6} we can see that all the clusters related to growth and sexual behavior are close to the anterior part of the POA not the posterior part (\hyperref[dummy-five]{\color{blue}Figure 5} and \hyperref[dummy-six]{\color{blue}6}). The anterior side of the POA is adjacent to the spinal cord and organum vasculosum laminae terminalis, “which is one of the brain's sensory circumventricular organs lacking a complete blood–brain barrier”(4). This is interesting to note because a lot of the genes in these clusters are related to hormone signaling, and thus send signals to these parts of the brain and body. Without a blood-brain barrier it is easier to transmit hormone signaling, there is no barrier that stops the hydrophobic hormone. Furthermore, having the spinal cord close by most likely facilitates sending signals to further away areas of the body. The ability to send hormonal signals through long distances, otherwise known as endocrine signaling, most likely makes the process of growth and reproduction possible.    
+
+**Results 2:** It is interesting to note that cluster E-3 not only shares genes important for growth but also the VLPO region which is important for sleep. To investigate the importance of cluster E-3 we found what the top five expressed genes were. Pak3, Irs4, Prlr, Slc17a7, and Gad1 were the top 5 genes expressed in the E-3 cluster. There were some similarities between these genes that were interesting. The first thing to stand out is that Irs4, Pak3, and Gad1 are involved with the intake and processing of glucose into the brain. Irs4 encodes for the insulin receptor substrate 4, Pak3 is a serine-threonine kinase required for glucose homeostasis and Gad1 encodes for an enzyme responsible for the making of an autoantigen in insulin-dependent diabetes, in other words it affects the intake of glucose into the brain. The other genes, Slc17a7 and Prlr help intake other chemicals into the brain and were less related with the intake of glucose. However, they were related with long term memory and mediation of estrogen levels. Overall, it is interesting to see that a cluster that seemed to be important in sexual/growth behavior and sleeping has three of its five top genes related with the intake and usage of sugar.   
+
+**Results 3:** We were interested in seeing what the top five expressed genes in the cluster I-14 were since it is highly expressed in the parenting mice. Selplg, Slc17a6, Pak3, Oxt, and Vgf were the top five genes expressed in cluster I-14. All five genes had rather different functions, they did not overlap on a pathway like the top five genes of cluster E-3 did. The top expressed gene, Selplg, and the fifth expressed gene, Vgf, are related with tissue inflammation responses.  Selplg expresses a protein important for the recruitment of white blood cells into inflamed tissue. The role of white blood cells is to fight off infection and other diseases, they are part of the body’s immune system. This might suggest that the parenting mice were perhaps infected with a pathogen or that their immune systems are boosted during early parenting stages. It is also possible that during the collection of the parenting samples there was contamination. The other top expressed genes in this cluster are involved with oxytocin regulation and glucose intake.  
+
+\bigskip
 
 # Conclusion
 
+In conclusion, The hypothalamic preoptic region (POA) is small in size but critical for a wide range of physiological functions to work. These functions include temperature regulation, thirst, hunger, sleep, and sexual behavior. The position of the POA is at the base of the brain, specifically in the anterior part of the hypothalamus and by the dorsal horn of the spinal cord. From the POA important populations of neurons project to different regions of the brain, from which different neurotransmitters like gonadotropin-releasing hormone (GnRH) and Lep are secreted. We found that there are differences in how the ventrolateral preoptic area, bed nucleus of the stria terminalis, and medial preoptic area worked to control the sleeping behavior between females and males. The mating group and parenting group had different activities on the bed nucleus of the stria terminalis, the bed nucleus of the anterior commissure, and SCN.   
+
+We also found that the position of the cells that release GnRH and Lep are close to the spinal cord. Furthermore, it was interesting to see a higher expression of genes that regulate white blood cells in parenting mice, suggesting they might have been infected by a pathogen. Overall, due to the limitations of the tools we have and data provided, a more thorough study of the brain needs to be completed in order to fully comprehend how the preoptic region of the hypothalamus works.    
+
+
+
 
 \newpage
 
+# References  
+
+```{r, results='asis', echo=FALSE}
+# Dummy coding for the hyperlink
+cat("\\phantomsection\\label{dummy}\n")
+```
+
+1. Moffitt, J. R., Bambah-Mukku, D., Eichhorn, S. W., Vaughn, E., Shekhar, K., Perez, J. D., ... & Zhuang, X. (2018). Molecular, spatial, and functional single-cell profiling of the hypothalamic preoptic region. Science, 362(6416), eaau5324. \url{https://doi.org/10.1126/science.aau5324}.
+
+2. Rothhaas, R., & Chung, S. (2021). Role of the preoptic area in sleep and thermoregulation. Frontiers in Neuroscience, 15, 664781. \url{https://doi.org/10.3389/fnins.2021.664781}.  
+
+3. Chung, S., Weber, F., Zhong, P., Tan, C. L., Nguyen, T. N., Beier, K. T., ... & Dan, Y. (2017). Identification of preoptic sleep neurons using retrograde labelling and gene profiling. Nature, 545(7655), 477-481. \url{https://doi.org/10.1038/nature22350}  
+
+4. Yu, Sangho, et al. “The Hypothalamic Preoptic Area and Body Weight Control.” Neuroendocrinology, 2018, \url{www.ncbi.nlm.nih.gov/pmc/articles/PMC6118330/}.   
+
+5. “Gnrh1 Gonadotropin Releasing Hormone 1 [Mus Musculus (House Mouse)] - Gene - NCBI.” National Center for Biotechnology Information, \url{www.ncbi.nlm.nih.gov/gene/14714#:~:text=Data%20suggest%20that%20GnRH%20up,mediated%20by%20ERK%20activation%2Fphosphorylation}. Accessed 12 May 2023.   
+
+6. “LEPR Leptin Receptor [Mus Musculus (House Mouse)] - Gene - NCBI.” National Center for Biotechnology Information, \url{www.ncbi.nlm.nih.gov/gene/16847}. Accessed 12 May 2023.   
+
+7. “Preoptic Area.” Preoptic Area - an Overview | ScienceDirect Topics, \url{www.sciencedirect.com/topics/medicine-and-dentistry/preoptic-area}. Accessed 12 May 2023.   
+
+\bigskip
+
+# Contributions
+
+Misael contributed to writing Abstract, part of introduction, discussion about sexual/growth behavior, and part of conclusion.  
+
+Jiaying contributed to writing part of introduction, results and discussion about sleeping behavior, and part of conclusion.       
+
+Gun contributed to data visualization, document formatting, and version control.
+
+Jason contributed to the exploratory data analysis, plot testing, document formatting and proofreading.
+
+\newpage
 
 # Figures
 
@@ -65,7 +131,7 @@ include_graphics("./plots/CCK.png")
 # Dummy coding for the hyperlink
 cat("\\phantomsection\\label{dummy-two}\n")
 ```
-```{r fig-two,echo=FALSE,out.width='100%',fig.cap="Fig 2: CRH Plot"}
+```{r fig-two,echo=FALSE,out.width='100%',fig.cap="CRH Plot"}
 include_graphics("./plots/CRH.png")
 ```
 
@@ -89,7 +155,7 @@ include_graphics("./plots/MnPO.png")
 # Dummy coding for the hyperlink
 cat("\\phantomsection\\label{dummy-five}\n")
 ```
-```{r fig-five,echo=FALSE,out.width='100%',fig.cap="Change the caption for this. Clusters Misael asked for."}
+```{r fig-five,echo=FALSE,out.width='100%',fig.cap="Spatial mapping of sexual and growth genes"}
 include_graphics("./plots/Misael.png")
 ```
 
@@ -97,7 +163,7 @@ include_graphics("./plots/Misael.png")
 # Dummy coding for the hyperlink
 cat("\\phantomsection\\label{dummy-six}\n")
 ```
-```{r fig-six,echo=FALSE,out.width='100%',fig.cap="Figure from the original"}
+```{r fig-six,echo=FALSE,out.width='100%',fig.cap="Figures from the original paper"}
 include_graphics("./plots/Fig 6.png")
 ```
 
